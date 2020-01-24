@@ -69,7 +69,7 @@ tail(fish, n = 10) # print the last n rows of the data frame
 
 We can also click on the `fish` data frame in the Environment tab or type View(fish).
 ```{r}
-#View(fish)
+View(fish)
 ```
 
 `summary()` and `str()` are classic functions used by many R programmers. `glimpse()` is part of the tidyverse.
@@ -87,16 +87,44 @@ glimpse(fish)
 
 ## Practice
 1. Load the data `mammal_lifehistories_v2.csv` and place it into a new object called `mammals`.
+```{r}
+mammals <-readr::read_csv("data/mammal_lifehistories_v2.csv")
+```
+
 
 2. Provide the dimensions of the data frame.
+```{r}
+dim(mammals)
+```
+
 
 3. Check the column names in the data frame. 
+```{r}
+colnames(mammals)
+```
+
 
 4. Use `str()` to show the structure of the data frame and its individual columns; compare this to `glimpse()`. 
 
-5. Print out the first few rows of the data using the function `head()`.  
+```{r}
+str(mammals)
+glimpse(mammals)
+```
+
+
+5. Print out the first few rows of the data using the function `head()`.
+
+```{r}
+head(mammals)
+```
+
 
 6. Print out the last few rows using the function `tail()`.
+
+```{r}
+tail(mammals)
+```
+
 
 ## Tidyverse
 The [tidyverse](www.tidyverse.org) is a collection of packages that make workflows in R easier. The packages operate more intuitively than base R commands. Although not universal, the tidyverse has been adopted by many R users.  
@@ -122,6 +150,11 @@ filter(fish, length >= 350)
 ```
 
 Filtering allows all of the expected operators; i.e. >, >=, <, <=, != (not equal), and == (equal).  It also allows us to extract multiple values simultaneously.
+
+```{r}
+filter(fish, lakeid != 'AL')
+```
+
 ```{r}
 filter(fish, lakeid == "AL" & length > 350) #only the fish that have lakeid AL AND length >350
 ```
@@ -131,9 +164,7 @@ When we use the '&' above, we are asking for a specific filter: provide only tho
 Rules: & is "and", | is "or", and ! is "not".  
 
 Notice that the code below generates a data frame larger than the one above because it includes non AL lakes.
-```{r}
-filter(fish, lakeid == "AL" | length < 350)
-```
+
 
 If you want to filter multiple values in the same variable you can use the `%in%` operator. This is a useful way to simplify your code.
 ```{r}
@@ -147,18 +178,36 @@ filter(fish, length == 167 & length == 175)
 
 ## Practice
 1. Filter the `fish` data to include the samples from lake `DY`.
+```{r}
+filter(fish, lakeid == "DY")
+```
 
 
 2. Filter the data to include all lakes except AL.
+```{r}
+filter(fish, lakeid != "AL" | length < 350)
+```
 
 
 3. Filter the data to include all lakes except AL and DY.
+```{r}
+filter(fish, lakeid != "AL" & lakeid != "DY")
 
+```
 
 4. Filter the data to include all fish with a scale length greater than or equal to 11.
+```{r}
+filter(fish, scalelength >= 11)
+
+```
 
 
 5. Filter the data to include fish only from lake AL and with a scalelength greater than or equal to 2 and less than or equal to 4.
+
+```{r}
+filter(fish, lakeid == "AL" & scalelength <= 4 & scalelength >= 2)
+```
+
 
 
 ## That's it, let's take a break!   
