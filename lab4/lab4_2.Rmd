@@ -236,7 +236,7 @@ No recorded value
 msleep %>%
   group_by(order) %>%
   summarise(mean_brain_weight = mean(brainwt, na.rm = TRUE))
-#Cetacea does not have a regarded mean brain weight value
+#Cetacea does not have a regarded mean brain weight values at all
 ```
 
 
