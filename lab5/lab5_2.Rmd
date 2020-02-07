@@ -208,8 +208,13 @@ small_mammals
 ```{r}
 
 
-ggplot(data = small_mammals, aes(x= common.name, y= mean_mass)) +
-  geom_bar(stat = "identity")
+ggplot(data = small_mammals, aes(x= common.name, y= mean.mass.g)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(color = "grey20", size = 8, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+        axis.text.y = element_text(color = "grey20", size = 8, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+        axis.title.x = element_text(color = "grey20", size = 8, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+        axis.title.y = element_text(color = "grey20", size = 8, angle = 90, hjust = .5, vjust = .5, face = "plain")) + 
+  coord_flip()
 ```
 
 
