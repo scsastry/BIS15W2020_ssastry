@@ -129,7 +129,7 @@ sapply(fisheries_tidy2, class)
 ```
 
 ```{r}
-fisheries$catch <- as.numeric(as.character(fisheries$catch))
+fisheries_tidy2$catch <- as.numeric(fisheries_tidy2$catch)
 sapply(fisheries_tidy2, class)
 ```
 
@@ -246,19 +246,15 @@ most_caught
 ```{r}
 #Visualize above data
 
-install.packages("maps")
-install.packages("mapdata")
-install.packages("rworldmap")
-library(maps)
-library(mapdata)
-library(rworldmap)
+#install.packages("rworldmap")
+#library(rworldmap)
 
 ```
 
 ```{r}
-matched <- joinCountryData2Map(most_caught, joinCode="NAME", nameJoinColumn="country")
-
-mapCountryData(matched, nameColumnToPlot="catch", mapTitle="Catch Country Sample", catMethod = "pretty", colourPalette = "heat")
+# matched <- joinCountryData2Map(most_caught, joinCode="NAME", nameJoinColumn="country")
+# 
+# mapCountryData(matched, nameColumnToPlot="catch", mapTitle="Catch Country Sample", catMethod = "pretty", colourPalette = "heat")
 
 ```
 
