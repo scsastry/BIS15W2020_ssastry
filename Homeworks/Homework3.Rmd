@@ -14,7 +14,7 @@ library(tidyverse)
 ```
 
 ```{r}
-homerange <- readr::read_csv("lab3/data/Tamburelloetal_HomeRangeDatabase.csv")
+homerange <- readr::read_csv("C:/Users/Savita/Documents/GitHub/BIS15W2020_ssastry/lab3/data/Tamburelloetal_HomeRangeDatabase.csv")
 ```
 
 ```{r}
