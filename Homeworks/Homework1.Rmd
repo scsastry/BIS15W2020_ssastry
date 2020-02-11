@@ -6,7 +6,7 @@ output:
   html_document: 
     keep_md: yes
 ---
-
+##Don't delete out the text from the homework
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -26,6 +26,10 @@ knitr::opts_chunk$set(echo = TRUE)
 (7-6)*3 + 1**2
 
 (40/(2*5))**2
+
+#The question just wanted you to adjust the given equations
+# (5-3)*3
+#(8/2)**2
 ```
 
 ```{r}
@@ -35,32 +39,45 @@ class(pi)
 #Results from the above show that pi is a numeric, which makes sense because the object is not a whole number
 ```
 
+
+##Going to break this apart so we can see the output as we go
 ```{r}
 #Here are your winnings and losses this week. Note that you don’t gamble on the weekends!
 blackjack <- c(140, -20, 70, -120, 240, NA, NA)
 roulette <- c(60, 50, 120, -300, 10, NA, NA)
+```
+```{r}
 days <- c('Mon','Tues', 'Wed', 'Thus', 'Fri', 'Sat', 'Sun')
+```
+
+```{r}
 names(blackjack) <- days
 names(roulette) <- days
+```
+
 
 # Calculate how much you won or lost in blackjack over the week.
-
+```{r}
 sum(blackjack, na.rm = TRUE)
 
 #since NA is not numeric, it needs to be disregarded for the sum calculation, indicated by na.rm = TRUE
+```
 
 # Calculate how much you won or lost in roulette over the week.
-
+```{r}
 sum(roulette, na.rm = TRUE)
-
+```
 # Build a total_week vector to show how much you lost or won on each day over the week. Which days seem lucky or unlucky for you?
-
+```{r}
 total_week <- c(blackjack + roulette)
 total_week
+#this will work, but it can be a little cleaner
+#total_week <-
+```
 #Monday, Tuesday, Wednesday, and Friday are lucky days because the gains are positive whereas Thursday is an unlucky day because the gains are negative. 
 
 # Should you stick to blackjack or roulette? Write a program that verifies this below.
-
+```{r}
 if (sum(blackjack, na.rm = TRUE)>sum(roulette, na.rm = TRUE)) { 
   print("Stick to blackjack")
   } else {
