@@ -6,6 +6,7 @@ output:
   html_document: 
     keep_md: yes
 ---
+##Please do not delete the homework text
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -40,6 +41,7 @@ str(fisheries)
 
 ```{r}
 sapply(fisheries, class)
+#option glimpse()
 ```
 
 4. Think about the classes. Will any present problems? Make any changes you think are necessary below.
@@ -50,6 +52,10 @@ fisheries[9:71] <- lapply(fisheries[9:71], as.numeric)
 sapply(fisheries, class)
 
 ```
+
+##Possibly some other concerning variables? Maybe some characters that should be factors? (Country, group, etc)
+
+
 
 5. How many countries are represented in the data? Provide a count.
 
@@ -63,6 +69,7 @@ length(unique(fisheries$Country))
 
 ```{r}
 unique(fisheries$Country)
+#option levels()
 ```
 
 
@@ -139,6 +146,8 @@ sapply(fisheries_tidy2, class)
 length(unique(fisheries_tidy2$ASFIS_spcode))
 
 #1530 distinct taxa
+#fisheries_tidy2 %>% 
+  #summarize(n_taxa=n_distinct(ASFIS_spcode))
 ```
  
 
@@ -158,7 +167,7 @@ catch_by_country
 ```
  
 13. Which country caught the most sardines (_Sardina_) between the years 1990-2000?
-
+##Notice you are overwriting your catch variable here
 ```{r}
 fisheries_tidy2 %>%
   select(country, year, ASFIS_sciname, catch) %>%
@@ -173,7 +182,7 @@ fisheries_tidy2 %>%
 ```
 
 14. Which five countries caught the most cephalopods between 2008-2012?
-
+##Notice you are overwriting your catch variable here
 ```{r}
 #cephalopods include Squids, cuttlefishes, octopuses
 
@@ -189,7 +198,7 @@ fisheries_tidy2 %>%
 ```
 
 15. Given the top five countries from question 12 above, which species was the highest catch total? The lowest?
-
+##Which species are highest and lowest?
 ```{r}
 
 fisheries_tidy2 %>%
@@ -204,7 +213,7 @@ fisheries_tidy2 %>%
 
 
 16. In some cases, the taxonomy of the fish being caught is unclear. Make a new data frame called `coastal_fish` that shows the taxonomic composition of "Miscellaneous coastal fishes" within the ISSCAAP_spgroupname column.
-
+##Grouping by sciname would make the output a little easire to read
 ```{r}
 coastal_fish <- fisheries_tidy2 %>%
   filter(str_detect(ISSCAAP_spgroupname, "Miscellaneous coastal fishes"))
@@ -250,7 +259,7 @@ most_caught
 #library(rworldmap)
 
 ```
-
+##Oh maps! Very ambitious, cool that you gave it a go!
 ```{r}
 # matched <- joinCountryData2Map(most_caught, joinCode="NAME", nameJoinColumn="country")
 # 
