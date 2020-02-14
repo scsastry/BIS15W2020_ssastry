@@ -1,0 +1,138 @@
+---
+title: "Homework3"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+```{r}
+homerange <- readr::read_csv("C:/Users/Savita/Documents/GitHub/BIS15W2020_ssastry/lab3/data/Tamburelloetal_HomeRangeDatabase.csv")
+```
+
+```{r}
+spec(homerange)
+#Allows us to see the full details of the columns
+```
+
+
+3. Explore the data. Show the dimensions, column names, classes for each variable, and a statistical summary. Keep these as separate code chunks.
+```{r}
+dim(homerange)
+```
+
+```{r}
+colnames(homerange)
+```
+
+```{r}
+str(homerange)
+```
+
+```{r}
+summary(homerange)
+```
+
+4. Are there NA's in your data? Show the code that you would use to verify this, please.  
+```{r}
+sum(is.na(homerange)) 
+#This output tells us that there are 2945 NA's in this dataset
+```
+
+5. Change the class of the variables `taxon` and `order` to factors and display their levels.
+```{r}
+homerange$taxon <- as.factor(homerange$taxon)
+homerange$order <- as.factor(homerange$order)
+
+levels(homerange$taxon)
+
+levels(homerange$order)
+```
+
+6. Make a new dataframe `deer` that is limited to the mean mass, log10 mass, family, genus, and species of deer in the database. The family for deer is cervidae. Arrange the data in descending order by log10 mass. Which is the largest deer?  
+
+```{r}
+deer <- homerange %>%
+  select(mean.mass.g, log10.mass, family, genus, species) %>%
+  filter(family == "cervidae") %>%
+  arrange(desc(log10.mass))
+
+deer
+
+#From this chunk of code, The largest deer is the species alces
+```
+
+7. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it! 
+
+```{r}
+snake <- homerange %>%
+  select(mean.hra.m2, taxon, order, family, genus, species) %>%
+  filter(taxon == "snakes") %>%
+  arrange(mean.hra.m2)
+
+snake
+
+#From this coke chunk schneideri has the smallest homerange and is known as the world's smallest viper located in Namibia and South Africa
+```
+
+
+8. You suspect that homerange and mass are correlated in birds. We need a ratio that facilitates exploration of this prediction. First, build a new dataframe called `hra_ratio` that is limited to genus, species, mean.mass.g, log10.mass, log10.hra. Arrange it in ascending order by mean mass in grams.
+
+```{r}
+hra_ratio <- homerange %>%
+  filter(taxon == "birds") %>%
+  select(genus, species, mean.mass.g, log10.mass, log10.hra) %>%
+  arrange(mean.mass.g)
+
+hra_ratio
+
+```
+
+9. Replace the existing `hra_ratio` dataframe with a new dataframe that adds a column calculating the ratio of log 10 hra to log 10 mass. Call it `hra.mass.ratio`. Arrange it in descending order by mean mass in grams.
+
+```{r}
+  hra_ratio <- hra_ratio %>%
+  mutate(hra.mass.ratio = log10.hra/log10.mass) %>%
+  select(genus, species, mean.mass.g, log10.mass, log10.hra,hra.mass.ratio) %>%
+  arrange(desc(mean.mass.g))
+
+hra_ratio
+```
+
+10. What is the lowest mass for birds with a `hra.mass.ratio` greater than or equal to 4.0?
+```{r}
+hra_ratio %>%
+  filter(hra.mass.ratio >= 4) %>%
+  arrange(mean.mass.g)
+
+#From the results above, the lowest mass for birds with a`hra.mass.ratio` greater than or equal to 4.0 is 5.15 g
+```
+
+
+11. Do a search online; what is the common name of the bird from #8 above? Place a link in your markdown file that takes us to a webpage with information on its biology.  
+
+Bird species Regulus: Common name is Kinglet
+
+-->[Wikipedia Page of Kinglet](https://en.wikipedia.org/wiki/Kinglet)
+
+12. What is the `hra.mass.ratio` for an ostrich? Show your work, please. 
+
+```{r}
+  ostrich_hra_ratio <- homerange %>%
+  filter(taxon == "birds") %>%
+  filter(common.name == "ostrich") %>%
+  mutate(hra.mass.ratio = log10.hra/log10.mass) %>%
+  select(common.name,hra.mass.ratio) 
+
+ostrich_hra_ratio
+#Results from above show that hra.mass.ratio for ostrich is 1.602565	
+  
+```
+
