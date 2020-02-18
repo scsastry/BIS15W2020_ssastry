@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Homework 5"
 author: "Savita Sastry"
@@ -242,3 +243,249 @@ amphibio_body_litter %>%
 
 
 
+=======
+---
+title: "Homework 5"
+author: "Savita Sastry"
+date: "2/11/2020"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Libraries
+```{r}
+library(tidyverse)
+library(naniar)
+library(skimr)
+```
+
+```{r}
+getwd()
+```
+
+## Data
+
+### `amniota` data
+Myhrvold N, Baldridge E, Chan B, Sivam D, Freeman DL, Ernest SKM (2015). “An amniote life-history
+database to perform comparative analyses with birds, mammals, and reptiles.” _Ecology_, *96*, 3109.
+doi: 10.1890/15-0846.1 (URL: https://doi.org/10.1890/15-0846.1).
+```{r}
+amniota <- 
+  readr::read_csv("C:/Users/savit/OneDrive/Documents/GitHub/BIS15W2020_ssastry/lab5/data/amniota.csv")
+```
+
+### `amphibio` data
+Oliveira BF, São-Pedro VA, Santos-Barrera G, Penone C, Costa GC (2017). “AmphiBIO, a global database
+for amphibian ecological traits.” _Scientific Data_, *4*, 170123. doi: 10.1038/sdata.2017.123 (URL:
+https://doi.org/10.1038/sdata.2017.123).
+```{r}
+amphibio <- 
+  readr::read_csv("C:/Users/savit/OneDrive/Documents/GitHub/BIS15W2020_ssastry/lab5/data/amphibio.csv")
+```
+
+1. First, do some exploratory analysis of both data sets. What is the structure, column names, and dimensions?
+
+```{r}
+colnames(amniota)
+```
+
+```{r}
+str(amniota)
+```
+
+```{r}
+dim(amniota)
+```
+
+```{r}
+colnames(amphibio)
+```
+
+```{r}
+str(amphibio)
+```
+
+
+```{r}
+dim(amphibio)
+```
+
+
+```{r}
+amphibio
+```
+
+```{r}
+amniota
+```
+
+2. How many total NAs are in each data set? Do these values make sense? Are NAs represented by any other values?
+
+```{r}
+amniota %>%
+  summarize(na_count = sum(is.na(amniota)))
+
+#It can't be true that the 'amniota' data set has 0 na values. Looking at the data, it seems there is a lot of '-999' values, which may be considered na according to those who compiled this data set. 
+```
+
+```{r}
+amphibio %>%
+  summarize(na_count = sum(is.na(amphibio)))
+```
+
+3. Make any necessary replacements in the data such that all NAs appear as "NA".
+
+```{r}
+amniota <- amniota %>%
+  na_if("-999")
+
+amniota
+```
+
+4. Use the package `naniar` to produce a summary, including percentages, of missing data in each column for both data sets.
+
+```{r}
+naniar::miss_var_summary(amniota)
+
+#looks like majority of the variables have a very large percentage of NA values. 
+```
+
+```{r}
+naniar::miss_var_summary(amphibio)
+#looks like majority of the variables have a very large percentage of NA values.
+```
+
+5. For the `amniota` data, calculate the number of NAs in the `egg_mass_g` column sorted by taxonomic class; i.e. how many NAs are present in the `egg_mass_g` column in birds, mammals, and reptiles? Does this results make sense biologically? How do these results affect your interpretation of NAs?
+
+```{r}
+amniota %>%
+  group_by(class) %>%
+  select(class, egg_mass_g) %>%
+  naniar::miss_var_summary(class = T)
+
+#It makes sense that there is 100% NAs in mammalia because they don't lay eggs. It is surprising that almost 92% of the values from this column are missing because most reptiles lay eggs. 
+
+#These results have made me aware that NA values could be present when data was not able to be recorded, not collected at all, or truly not applicable to the measure being studied. However, the value NA itself does not allow us to differentiate between these possibilities. 
+```
+
+6. Which taxonomic classes are represented in the data? Summarize this in a chart then make a barplot that shows the proportion of observations in each taxonomic class.
+
+```{r}
+amniota %>%
+  ggplot(aes(x = class, fill = class)) +
+  geom_bar(stat = "count")
+```
+
+7. Let's explore the taxonomic composition of the data a bit more. How many genera are represented by taxonomic class? Present this as a data table and bar plot.
+
+```{r}
+amniota %>%
+  group_by(class) %>%
+  summarize(genus_count = length(unique(genus)))
+
+```
+
+```{r}
+amniota %>%
+  group_by(class) %>%
+  summarize(genus_count = length(unique(genus))) %>%
+  ggplot(aes(x = class, y = genus_count, fill = class, label = genus_count)) +
+  ggtitle("Genera Count per Class") +
+  geom_bar(stat = "Identity") +
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+```
+
+8. Lastly, how many species are represented in each taxonomic class? Present this as a data table and bar plot.
+
+```{r}
+amniota %>%
+  group_by(class) %>%
+  summarize(species_count = length(unique(species)))
+```
+
+```{r}
+amniota %>%
+  group_by(class) %>%
+  summarize(species_count = length(unique(species))) %>%
+  ggplot(aes(x = class, y = species_count, fill = class, label = species_count)) +
+  ggtitle("Species Count per Class") +
+  geom_bar(stat = "Identity") +
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+```
+
+9. The `amphibio` data includes information on ecology. Each species is classified as fossorial, terrestrial, aquatic, or arboreal. How many species are in each of these categories? Make a bar plot to visualize these results. Which category is most/ least represented in the data?
+
+
+```{r}
+amphibio_territory <- amphibio %>%
+  summarize(Fos_tot = sum(Fos, na.rm = T),
+            Ter_tot = sum(Ter, na.rm = T), 
+            Aqu_tot = sum(Aqu, na.rm = T), 
+            Arb_tot = sum(Arb, na.rm = T)) %>%
+  pivot_longer(`Fos_tot`:`Arb_tot`,
+               names_to = "Territory", 
+               values_to = "Count",)
+
+amphibio_territory
+
+#Summarizes the number of species that are in each of fossorial, terrestrial, aquatic, or arboreal categories
+```
+
+```{r}
+amphibio_territory %>%
+  ggplot(aes(x = Territory, y = Count, fill = Territory, label = Count)) +
+  geom_bar(stat = "Identity") +
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+#Fossil inhabitants are the least represented adn Terrestrial inhabitants are the most represented
+```
+
+10. For the amphibio data, we are interested to know if body size is correlated with litter size? Make a plot that shows this relationship. You should notice that there are outliers. Can you think of a way to identify the outliers for both body size and litter size? What happens when you then re-plot the data?
+
+```{r}
+amphibio
+  
+```
+
+
+```{r}
+#New data frame with body size and average litter size since they only provided min and max litter size values
+amphibio_body_litter <- amphibio %>%
+  rowwise() %>%
+  mutate(avg_litter_size = mean(c(Litter_size_min_n, Litter_size_max_n, na.rm = TRUE))) %>%
+  select(Species, Body_size_mm, avg_litter_size)
+
+amphibio_body_litter
+  
+```
+
+```{r}
+amphibio_body_litter %>%
+  filter(avg_litter_size <= 5500, Body_size_mm <= 550) %>%
+  ggplot(aes(x = Body_size_mm, y = avg_litter_size)) +
+  geom_jitter() +
+  geom_smooth(method=lm, se=F)
+```
+
+```{r}
+amphibio_body_litter %>%
+  filter(avg_litter_size <= 5500, Body_size_mm <= 550) %>%
+  ggplot(aes(x = avg_litter_size , y = Body_size_mm)) +
+  geom_jitter() + 
+  geom_smooth(method=lm, se=F)
+```
+
+
+
+
+
+
+
+>>>>>>> 347692167eca29b6ef8d5fd6b6e579ca4104d162
