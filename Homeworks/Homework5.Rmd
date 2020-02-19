@@ -127,10 +127,11 @@ amniota %>%
 #It makes sense that there is 100% NAs in mammalia because they don't lay eggs. It is surprising that almost 92% of the values from this column are missing because most reptiles lay eggs. 
 
 #These results have made me aware that NA values could be present when data was not able to be recorded, not collected at all, or truly not applicable to the measure being studied. However, the value NA itself does not allow us to differentiate between these possibilities. 
+#Great answer!
 ```
 
 6. Which taxonomic classes are represented in the data? Summarize this in a chart then make a barplot that shows the proportion of observations in each taxonomic class.
-
+##Remember to make the chart (data table) before making the plot.
 ```{r}
 amniota %>%
   ggplot(aes(x = class, fill = class)) +
@@ -146,6 +147,7 @@ amniota %>%
 
 ```
 
+#Gorgeous plot, I love it!
 ```{r}
 amniota %>%
   group_by(class) %>%
@@ -177,7 +179,7 @@ amniota %>%
 
 9. The `amphibio` data includes information on ecology. Each species is classified as fossorial, terrestrial, aquatic, or arboreal. How many species are in each of these categories? Make a bar plot to visualize these results. Which category is most/ least represented in the data?
 
-
+##You can also do this using the case_when() function
 ```{r}
 amphibio_territory <- amphibio %>%
   summarize(Fos_tot = sum(Fos, na.rm = T),
@@ -209,7 +211,7 @@ amphibio
   
 ```
 
-
+##Nice! Not many people accounted for this.
 ```{r}
 #New data frame with body size and average litter size since they only provided min and max litter size values
 amphibio_body_litter <- amphibio %>%
@@ -221,6 +223,7 @@ amphibio_body_litter
   
 ```
 
+#Remember one of these needed to be the unfiltered version showing outliers.
 ```{r}
 amphibio_body_litter %>%
   filter(avg_litter_size <= 5500, Body_size_mm <= 550) %>%
