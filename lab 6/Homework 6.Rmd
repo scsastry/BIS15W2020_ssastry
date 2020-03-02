@@ -72,7 +72,7 @@ gapminder %>%
 
 
 **3. How do the distributions of life expectancy compare for the years 1952 and 2007? _Challenge: Can you put both distributions on a single plot?_**
-
+##This works absolutely fine! But note that you can skip a few of these coding steps and just filter the data by each of the two years and plot it against against life expectancy.
 ```{r}
 life_1952 <- gapminder %>%
   select(lifeExp, year)%>%
@@ -126,7 +126,7 @@ continent_lifeExp
 
 **5. How has life expectancy changed between 1952-2007 for each continent? Try using `geom_line()` for this, including all continents on the same  plot.**
 
-
+##I just love these point lines
 ```{r}
 continent_lifeExp %>%
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
@@ -154,7 +154,7 @@ gapminder %>%
 
 
 **7. There is extreme disparity in per capita GDP. Rescale the x axis to make this easier to interpret. How would you characterize the relationship?**
-
+##This trims the data down, but to scale it we might want to use something like scale_x_log10() and geom_smoth() to make the relationship really pop out.
 ```{r}
 gapminder %>%
   filter(gdpPercap <= 50000) %>%
@@ -239,3 +239,4 @@ gdp_country %>%
 #Population growth and per capita gdp do not reflect the same way in these top 5 countries
 ```
 
+##Bars work well enough to show the difference between countries, but maybe if we're interested in plotting growth over time we might consider a line graph, yeah?
